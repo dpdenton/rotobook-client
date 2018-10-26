@@ -12,6 +12,7 @@ export const POST_EMPLOYEE_FORM_REQUEST = 'post/employee/SUBMIT_REQUEST';
 export const POST_EMPLOYEE_FORM_SUCCESS = 'post/employee/SUBMIT_SUCCESS';
 export const POST_EMPLOYEE_FORM_FAILURE = 'post/employee/SUBMIT_FAIL';
 
+// I'd normally dispatch API actions through some kind of middleware but overkill for this exercise.
 
 export const postEmployeeForm = (data: any) => (dispatch: any) => {
 
@@ -35,9 +36,7 @@ export const postEmployeeForm = (data: any) => (dispatch: any) => {
         });
 };
 
-
 export const SET_FORM_FIELD_VALUE = 'SET_FORM_FIELD_VALUE';
-
 
 export const setFormFieldValue = (payload: FormInterface) => {
 

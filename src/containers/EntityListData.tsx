@@ -24,7 +24,6 @@ class EntityListData extends React.Component<EntityListDataProps> {
 const mapState = (state: any, props: any) => {
 
     const entity = state.entities[props.entity];
-    console.log({entity})
 
     return {
         loading: entity.loading,

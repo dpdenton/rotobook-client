@@ -1,6 +1,16 @@
 import {CLEAR_FORM_DATA, PUSH_FORM_FIELD_ERROR, REMOVE_FORM_FIELD_ERROR, SET_FORM_FIELD_VALUE} from "../actions/forms";
 import {EmployeeAttributes} from "../types/enums";
 
+/*
+
+I set the form reducer up in such a way that you can easily add more forms with different fields
+and use the same actions so manage them, minimising maintenence and duplicate code.
+
+It's a pattern probably more used with entities but I think can work equally well with forms, especially if there
+are lots of forms which map directly to entities within the app.
+
+ */
+
 export interface ReducerFormInterface {
     employee: EmployeeFormInterface
 }

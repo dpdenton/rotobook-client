@@ -1,12 +1,12 @@
 export enum ApiEndpoints {
-    baseUrl = 'http://127.0.0.1:8000/api/v1',
-    applicants = '/applicants'
+    baseUrl = 'https://rotobook.herokuapp.com/api/v1',
+    applicants = '/employees'
 }
 
 export enum PagePaths {
     EmployeeList = '/',
-    EmployeeCreate = '/employee',
-    EmployeeDetail = '/employee/:id',
+    EmployeeCreate = '/add',
+    EmployeeDetail = '/:id',
 }
 
 export enum Entities {

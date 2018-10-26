@@ -81,6 +81,7 @@ class FormContainer extends React.Component<FormContainerProps> {
     }
 
     private async handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+
         e.preventDefault();
 
         const formData = parseFormData(this.props.employee);
@@ -91,13 +92,13 @@ class FormContainer extends React.Component<FormContainerProps> {
             // new resource created
             if (response.payload.status === 201) {
 
+                // @TODO improve feedback message
                 alert('Success! Your Employee Record has been submitted');
 
                 // clear form data and redirect to home page.
-                const payload = {
+                this.props.clearFormData({
                     entity: Entities.Employee,
-                };
-                this.props.clearFormData(payload);
+                });
             }
         } catch (e) {
             alert(e);

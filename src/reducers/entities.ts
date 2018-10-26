@@ -1,5 +1,7 @@
 import {GET_EMPLOYEE_LIST_FAILURE, GET_EMPLOYEE_LIST_REQUEST, GET_EMPLOYEE_LIST_SUCCESS} from "../actions/entities";
 
+// @TODO add state interfaces
+
 const initialState = {
     employee: {
         loading: false,

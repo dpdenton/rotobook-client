@@ -1,20 +1,11 @@
 import axios from "axios";
 import {ApiEndpoints} from "../types/enums";
 
-export interface Action<P> {
-    type: string,
-    payload: P
-}
-
-export interface Request {
-    request: {
-        url: string
-    }
-}
-
 export const GET_EMPLOYEE_LIST_REQUEST = 'get/employee/LIST_REQUEST';
 export const GET_EMPLOYEE_LIST_SUCCESS = 'get/employee/LIST_SUCCESS';
 export const GET_EMPLOYEE_LIST_FAILURE = 'get/employee/LIST_FAIL';
+
+// I'd normally dispatch API actions through some kind of middleware but overkill for this exercise.
 
 export const getEmployeeList = () => (dispatch: any) => {
 
