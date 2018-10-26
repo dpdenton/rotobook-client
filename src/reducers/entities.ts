@@ -1,6 +1,8 @@
 import {GET_EMPLOYEE_LIST_FAILURE, GET_EMPLOYEE_LIST_REQUEST, GET_EMPLOYEE_LIST_SUCCESS} from "../actions/entities";
 
 // @TODO add state interfaces
+// flatten the data (altho data is already flat), but in production using something like https://github.com/paularmstrong/normalizr
+// would also implement some form of caching bases as per https://sliced.co
 
 const initialState = {
     employee: {
