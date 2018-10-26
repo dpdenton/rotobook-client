@@ -1,0 +1,91 @@
+body {
+    margin: 25px;
+    background-color: whitesmoke;
+    font-family: "Open Sans", Arial, sans-serif;
+    font-weight: lighter;
+}
+
+h1, h2, h3, h4 {
+    font-weight: lighter;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+label {
+    text-transform: capitalize;
+}
+
+input, textarea {
+    z-index: 1;
+    border: 1px solid #d3d9dc;
+    border-radius: 6px;
+    background-color: #fff;
+    font-size: 16px;
+    box-sizing: border-box;
+    padding: 13px;
+    width: 100%
+}
+
+input[type="submit"]:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.page {
+    border-radius: 10px;
+    margin: auto;
+    background-color: white;
+    max-width: 680px;
+    padding: 25px;
+    background-image: linear-gradient(to bottom left, #fff 0%, #f9f9fa 100%);
+    -webkit-box-shadow: 0 0 40px rgba(23,23,36,0.05), -15px 15px 30px rgba(23,23,36,0.05), -70px 70px 70px rgba(33,33,43,0.15);
+    box-shadow: 0 0 40px rgba(23,23,36,0.05), -15px 15px 30px rgba(23,23,36,0.05), -70px 70px 70px rgba(33,33,43,0.15);
+}
+
+.page h1, .page p {
+    text-align: center;
+}
+
+.tabs {
+    display: flex;
+    margin-bottom: 25px;
+}
+.tabs .tab {
+    width: 50%;
+    text-align: center;
+    border-bottom: thin solid #f20f2d40;
+}
+
+.tabs .tab.active {
+    border-bottom: thin solid #f20f2d;
+}
+
+.tabs .tab a {
+    display: block;
+    padding: 10px 0
+}
+
+.employeeListItem {
+    padding-bottom: 25px;
+    margin-bottom: 25px;
+    border-bottom: thin solid whitesmoke;
+}
+
+.employeeListItemName {
+    font-weight: bold;
+}
+.employeeListItemMessage {
+    font-style: italic;
+}
+
+.employeeListItemInfo {
+    display: flex;
+    align-items: center;
+}
+
+.employeeListItem img {
+    margin-right: 20px
+}
