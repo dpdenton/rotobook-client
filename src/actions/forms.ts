@@ -2,7 +2,13 @@ import axios from 'axios';
 import {ApiEndpoints, EmployeeAttributes, Entities} from "../types/enums";
 
 
-export interface FormInterface  {
+export interface Action<P> {
+    type: string,
+    payload: P
+}
+
+
+export interface FormInterface {
     entity: Entities
     attribute: EmployeeAttributes
     value: string
@@ -11,6 +17,7 @@ export interface FormInterface  {
 export const POST_EMPLOYEE_FORM_REQUEST = 'post/employee/SUBMIT_REQUEST';
 export const POST_EMPLOYEE_FORM_SUCCESS = 'post/employee/SUBMIT_SUCCESS';
 export const POST_EMPLOYEE_FORM_FAILURE = 'post/employee/SUBMIT_FAIL';
+
 
 // I'd normally dispatch API actions through some kind of middleware but overkill for this exercise.
 
@@ -69,8 +76,12 @@ export const removeFormFieldError = (payload: FormInterface) => {
 export const CLEAR_FORM_DATA = 'CLEAR_FORM_DATA';
 
 export const clearFormData = (payload: Partial<FormInterface>) => {
+    return createAction(CLEAR_FORM_DATA, payload);
+};
+
+function createAction<P>(type: string, payload: P): Action<P> {
     return {
-        type: CLEAR_FORM_DATA,
+        type,
         payload,
     }
-};
+}
