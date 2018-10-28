@@ -1,5 +1,5 @@
 import {validatorEmail, validatorMinChars, validatorRequired, validatorRotageekEmail} from "../utils/validators";
-import {EmployeeAttributes} from "../types/enums";
+import {EmployeeAttribute} from "../types/enums";
 
 /*
 Configure the form fields to validate upon zero or more validators, as define in utils/validators.js
@@ -10,16 +10,16 @@ export const getEmployeeFieldValidators = (attribute: string) => {
 };
 
 export const EMPLOYEE_FORM_VALIDATORS = {
-    [EmployeeAttributes.Name]: [
+    [EmployeeAttribute.Name]: [
         validatorRequired,
         validatorMinChars
     ],
-    [EmployeeAttributes.Email]: [
+    [EmployeeAttribute.Email]: [
         validatorRequired,
         validatorEmail,
         validatorRotageekEmail
     ],
-    [EmployeeAttributes.Message]: [
+    [EmployeeAttribute.Message]: [
         validatorRequired
     ]
 };

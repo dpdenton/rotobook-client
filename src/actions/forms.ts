@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {ApiEndpoints, EmployeeAttributes, Entities} from "../types/enums";
+import {ApiEndpoints, EmployeeAttribute, Entities} from "../types/enums";
 
 
 export interface Action<P> {
@@ -10,7 +10,7 @@ export interface Action<P> {
 
 export interface FormInterface {
     entity: Entities
-    attribute: EmployeeAttributes
+    attribute: EmployeeAttribute
     value: string
 }
 
@@ -75,6 +75,13 @@ export const removeFormFieldError = (payload: FormInterface) => {
 
 export const CLEAR_FORM_DATA = 'CLEAR_FORM_DATA';
 
+/**
+ *
+ * Just checking TypeScript knows it's returning Partial<FormInterface>
+ *
+ * @param {Partial<FormInterface>} payload
+ * @returns {Action<Partial<FormInterface>>}
+ */
 export const clearFormData = (payload: Partial<FormInterface>) => {
     return createAction(CLEAR_FORM_DATA, payload);
 };

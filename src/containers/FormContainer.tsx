@@ -1,11 +1,12 @@
 import * as React from 'react';
 import Input from "../components/Input";
 import {connect} from "react-redux";
+
 import {
     FormInterface, setFormFieldValue, pushFormFieldError, removeFormFieldError, postEmployeeForm,
     clearFormData
 } from "../actions/forms";
-import {EmployeeAttributes, Entities} from "../types/enums";
+import {EmployeeAttribute, Entities} from "../types/enums";
 import {getEmployeeFieldValidators} from "../config/forms";
 import TextArea from "../components/TextArea";
 import {parseFormData} from "../utils";
@@ -28,6 +29,8 @@ class FormContainer extends React.Component<FormContainerProps> {
     constructor(props: FormContainerProps) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.onInputChange = this.onInputChange.bind(this);
+        this.onInputBlur = this.onInputBlur.bind(this);
     }
 
     public render() {
@@ -40,33 +43,30 @@ class FormContainer extends React.Component<FormContainerProps> {
         return (
             <form onSubmit={this.handleSubmit}>
                 <Input
-                    label={EmployeeAttributes.Name}
+                    {...employee.name}
+                    label={'Name *'}
                     placeholder={'Enter your full name'}
-                    value={employee.name.value}
-                    errors={employee.name.errors}
-                    name={EmployeeAttributes.Name}
-                    onChange={this.onInputChange.bind(this, EmployeeAttributes.Name)}
-                    onBlur={this.onInputBlur.bind(this, EmployeeAttributes.Name)}
+                    name={EmployeeAttribute.Name}
+                    onChange={this.onInputChange}
+                    onBlur={this.onInputBlur}
                 />
 
                 <Input
-                    label={EmployeeAttributes.Email}
+                    {...employee.email}
+                    label={'Email *'}
                     placeholder={'Enter your full email'}
-                    value={employee.email.value}
-                    errors={employee.email.errors}
-                    name={EmployeeAttributes.Email}
-                    onChange={this.onInputChange.bind(this, EmployeeAttributes.Email)}
-                    onBlur={this.onInputBlur.bind(this, EmployeeAttributes.Email)}
+                    name={EmployeeAttribute.Email}
+                    onChange={this.onInputChange}
+                    onBlur={this.onInputBlur}
                 />
 
                 <TextArea
-                    label={EmployeeAttributes.Message}
+                    {...employee.message}
+                    label={'Message *'}
                     placeholder={"What's your favourite saying?"}
-                    value={employee.message.value}
-                    errors={employee.message.errors}
-                    name={EmployeeAttributes.Message}
-                    onChange={this.onInputChange.bind(this, EmployeeAttributes.Message)}
-                    onBlur={this.onInputBlur.bind(this, EmployeeAttributes.Message)}
+                    name={EmployeeAttribute.Message}
+                    onChange={this.onInputChange}
+                    onBlur={this.onInputBlur}
                 />
 
                 <Input
@@ -78,6 +78,47 @@ class FormContainer extends React.Component<FormContainerProps> {
 
             </form>
         )
+    }
+
+    private onInputBlur(name: EmployeeAttribute, value: string) {
+
+        // get the validators for each field defined in the forms config file and validate.
+        const validators = getEmployeeFieldValidators(name);
+        validators.forEach(this.validate.bind(this, name, value))
+    }
+
+    private onInputChange(name: EmployeeAttribute, value: string) {
+
+        // create payload in FormInterface form where the value is the e.currentTarget.value
+        // const {value, name} = e.currentTarget as { value: string, name: EmployeeAttribute };
+
+        const payload = {
+            entity: Entities.Employee,
+            attribute: name,
+            value,
+        };
+        this.props.setFormFieldValue(payload);
+    }
+
+    private validate(attribute: EmployeeAttribute, value: string, validator: ValidatorInterface) {
+
+
+        // create payload in FormInterface form where the value is the error message
+        const payload = {
+            entity: Entities.Employee,
+            attribute,
+            value: validator.message,
+        };
+
+        // either remove or add this error message depending on whether the form field is valid.
+        // This does dispatch some unnecessary actions, for example if field has no error messages
+        // and removeFormFieldError is called then the reducer will try and remove something which
+        // isn't there, but given how infrequently this is called, it's an acceptable solution.
+        const dispatchAction = validator.isValid(value)
+            ? this.props.removeFormFieldError
+            : this.props.pushFormFieldError;
+
+        dispatchAction(payload);
     }
 
     private async handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -105,48 +146,6 @@ class FormContainer extends React.Component<FormContainerProps> {
             console.log({e})
         }
     }
-
-    private onInputBlur(field: string, e: React.FormEvent<HTMLInputElement>) {
-
-        const {value} = e.currentTarget;
-
-        // get the validators for each field defined in the forms config file and validate.
-        const validators = getEmployeeFieldValidators(field);
-        validators.forEach(this.validate.bind(this, field, value))
-    }
-
-    private onInputChange(attribute: EmployeeAttributes, e: React.FormEvent<HTMLInputElement>) {
-
-        // create payload in FormInterface form where the value is the e.currentTarget.value
-        const {value} = e.currentTarget;
-        const payload = {
-            entity: Entities.Employee,
-            attribute,
-            value,
-        };
-        this.props.setFormFieldValue(payload);
-    }
-
-    private validate(attribute: EmployeeAttributes, value: string, validator: ValidatorInterface) {
-
-
-        // create payload in FormInterface form where the value is the error message
-        const payload = {
-            entity: Entities.Employee,
-            attribute,
-            value: validator.message,
-        };
-
-        // either remove or add this error message depending on whether the form field is valid.
-        // This does dispatch some unnecessary actions, for example if field has no error messages
-        // and removeFormFieldError is called then the reducer will try and remove something which
-        // isn't there, but given how infrequently this is called, it's an acceptable solution.
-        const dispatchAction = validator.isValid(value)
-            ? this.props.removeFormFieldError
-            : this.props.pushFormFieldError;
-
-        dispatchAction(payload);
-    }
 }
 
 const mapState = (state: any, props: any) => {
@@ -155,9 +154,9 @@ const mapState = (state: any, props: any) => {
     let errors: string[] = [];
     const completed: boolean[] = [];
 
-    for (const item in EmployeeAttributes) {
+    for (const item in EmployeeAttribute) {
         if (isNaN(Number(item))) {
-            const key = EmployeeAttributes[item];
+            const key = EmployeeAttribute[item];
             const field = state.forms.employee[key];
             if (field) {
                 completed.push(field.value.length > 0);

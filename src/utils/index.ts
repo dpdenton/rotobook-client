@@ -6,3 +6,4 @@ export const parseFormData = (formData: any) => {
         return prevValue;
     }, {})
 };
+

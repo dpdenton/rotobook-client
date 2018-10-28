@@ -1,6 +1,8 @@
 import * as React from 'react';
 import Label from "./Label";
 import FormGroup from "./FormGroup";
+import {EmployeeAttribute} from "../types/enums";
+import ErrorList from "./ErrorList";
 
 interface InputProps {
     value: string
@@ -10,13 +12,13 @@ interface InputProps {
     errors?: string[]
     label?: string
     type?: string
-    onChange?: (e: React.FormEvent<HTMLInputElement>) => void
-    onBlur?: (e: React.FormEvent<HTMLInputElement>) => void
+    onChange?: (name: string, value: string) => void
+    onBlur?: (name: string, value: string) => void
 }
 
 const Input: React.SFC<InputProps> = ({name, label, errors = [], ...input}) => {
 
-    // const {name, label, errors, ...input} = props;
+    const {onChange, onBlur, ...rest} = input;
 
     return (
         <FormGroup>
@@ -26,25 +28,23 @@ const Input: React.SFC<InputProps> = ({name, label, errors = [], ...input}) => {
             </Label>}
             <input
                 className="form-input"
-                {...input}
+                {...rest}
                 id={name}
                 name={name}
+                onBlur={onEvent.bind(null, onBlur)}
+                onChange={onEvent.bind(null, onChange)}
             />
-            <ul className='error-list'>
-                {errors.map((error, index) => (
-                    <li
-                        key={index}
-                    >{error}</li>
-                ))}
-            </ul>
+            <ErrorList
+                errors={errors}
+            />
         </FormGroup>
     )
 };
 
-Input.defaultProps = {
-    type: 'text',
-    onChange: () => null,
-    errors: [],
+const onEvent = (callbackFn: any, e: React.FormEvent<HTMLInputElement>) => {
+    const {name, value} = e.currentTarget as { value: string, name: EmployeeAttribute };
+    callbackFn(name, value);
 };
+
 
 export default Input;

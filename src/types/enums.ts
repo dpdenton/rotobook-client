@@ -13,7 +13,7 @@ export enum Entities {
     Employee = 'employee',
 }
 
-export enum EmployeeAttributes {
+export enum EmployeeAttribute {
     Id = 'id',
     Name = 'name',
     Email = 'email',

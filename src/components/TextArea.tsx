@@ -1,6 +1,8 @@
 import * as React from 'react';
 import Label from "./Label";
 import FormGroup from "./FormGroup";
+import {EmployeeAttribute} from "../types/enums";
+import ErrorList from "./ErrorList";
 
 interface TextAreaProps {
     label?: string
@@ -9,14 +11,13 @@ interface TextAreaProps {
     name: string
     errors: string[]
     type?: string
-    onChange?: (e: React.FormEvent<HTMLTextAreaElement>) => void
-    onBlur?: (e: React.FormEvent<HTMLTextAreaElement>) => void
+    onChange?: (name: string, value: string) => void
+    onBlur?: (name: string, value: string) => void
 }
 
+const TextArea: React.SFC<TextAreaProps> = ({name, label, errors, ...input}) => {
 
-const TextArea: React.SFC<TextAreaProps> = props => {
-
-    const {name, label, errors, ...input} = props;
+    const {onBlur, onChange, ...rest} = input;
 
     return (
         <FormGroup>
@@ -28,21 +29,20 @@ const TextArea: React.SFC<TextAreaProps> = props => {
                 {...input}
                 id={name}
                 name={name}
+                onBlur={onEvent.bind(null, onBlur)}
+                onChange={onEvent.bind(null, onChange)}
+                {...rest}
             />
-            <ul className='error-list'>
-                {errors.map((error, index) => (
-                    <li
-                        key={index}
-                    >{error}</li>
-                ))}
-            </ul>
+            <ErrorList
+                errors={errors}
+            />
         </FormGroup>
     )
 };
 
-TextArea.defaultProps = {
-    type: 'text',
-    onChange: () => null,
+const onEvent = (callbackFn: any, e: React.FormEvent<HTMLTextAreaElement>) => {
+    const {name, value} = e.currentTarget as { value: string, name: EmployeeAttribute };
+    callbackFn(name, value);
 };
 
 export default TextArea;

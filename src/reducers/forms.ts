@@ -1,5 +1,5 @@
 import {CLEAR_FORM_DATA, PUSH_FORM_FIELD_ERROR, REMOVE_FORM_FIELD_ERROR, SET_FORM_FIELD_VALUE} from "../actions/forms";
-import {EmployeeAttributes} from "../types/enums";
+import {EmployeeAttribute} from "../types/enums";
 
 /*
 
@@ -22,12 +22,12 @@ export interface ReducerFieldInterface {
 
 export interface EmployeeFormInterface {
 
-    [EmployeeAttributes.Name]: ReducerFieldInterface,
-    [EmployeeAttributes.Email]: ReducerFieldInterface,
-    [EmployeeAttributes.Message]: ReducerFieldInterface,
+    [EmployeeAttribute.Name]: ReducerFieldInterface,
+    [EmployeeAttribute.Email]: ReducerFieldInterface,
+    [EmployeeAttribute.Message]: ReducerFieldInterface,
 }
 
-const initialFieldState = {
+const initialFieldState: ReducerFieldInterface = {
     value: '',
     errors: []
 };
@@ -35,9 +35,9 @@ const initialFieldState = {
 const initialState: ReducerFormInterface = {
 
     employee: {
-        [EmployeeAttributes.Name]: initialFieldState,
-        [EmployeeAttributes.Email]: initialFieldState,
-        [EmployeeAttributes.Message]: initialFieldState,
+        [EmployeeAttribute.Name]: initialFieldState,
+        [EmployeeAttribute.Email]: initialFieldState,
+        [EmployeeAttribute.Message]: initialFieldState,
     }
 };
 
