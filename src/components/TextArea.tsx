@@ -50,5 +50,4 @@ const onEvent = ({callback, validators, errors}: any) => (e: React.FormEvent<HTM
     callback({name, value, validators, errors});
 };
 
-
 export default TextArea;

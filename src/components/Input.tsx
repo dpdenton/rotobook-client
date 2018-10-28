@@ -47,7 +47,6 @@ const Input: React.SFC<InputProps> = ({name, label, validators = [], errors = []
     )
 };
 
-
 const onEvent = ({callback, validators, errors}: any) => (e: React.FormEvent<HTMLInputElement>) => {
     const {name, value} = e.currentTarget as { value: string, name: EmployeeAttribute };
     callback({name, value, validators, errors});
