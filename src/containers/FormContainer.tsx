@@ -6,14 +6,11 @@ import Input from "../components/Input";
 import TextArea from "../components/TextArea";
 
 import {parseFormData} from "../utils";
-import {ValidatorInterface} from "../utils/validators";
-
-import {Employee} from "../types/models";
+import {Employee, Validator} from "../types/";
 import {EmployeeAttribute, Entities} from "../types/enums";
 
-import {getEmployeeFieldValidators} from "../config/forms";
-
 import {FormEntity} from "../reducers/forms";
+import {getEmployeeFieldValidators} from "../config/forms";
 
 import {
     FormInterface,
@@ -33,6 +30,13 @@ interface FormContainerProps {
     removeFormFieldError: (payload: FormInterface) => void
     postEmployeeForm: (data: Employee) => any
     clearFormData: (payload: Partial<FormInterface>) => void
+}
+
+export interface EventInterface {
+    validators: Validator[],
+    name: EmployeeAttribute,
+    value: string
+    errors: string[]
 }
 
 class FormContainer extends React.Component<FormContainerProps> {
@@ -64,6 +68,7 @@ class FormContainer extends React.Component<FormContainerProps> {
                         name={EmployeeAttribute.Name}
                         onChange={this.onInputChange}
                         onBlur={this.onInputBlur}
+                        validators={getEmployeeFieldValidators(EmployeeAttribute.Name)}
                     />
 
                     <Input
@@ -73,6 +78,7 @@ class FormContainer extends React.Component<FormContainerProps> {
                         name={EmployeeAttribute.Email}
                         onChange={this.onInputChange}
                         onBlur={this.onInputBlur}
+                        validators={getEmployeeFieldValidators(EmployeeAttribute.Email)}
                     />
 
                     <TextArea
@@ -82,6 +88,8 @@ class FormContainer extends React.Component<FormContainerProps> {
                         name={EmployeeAttribute.Message}
                         onChange={this.onInputChange}
                         onBlur={this.onInputBlur}
+                        validators={getEmployeeFieldValidators(EmployeeAttribute.Message)}
+
                     />
 
                     <Input
@@ -98,17 +106,18 @@ class FormContainer extends React.Component<FormContainerProps> {
         )
     }
 
-    private onInputBlur(name: EmployeeAttribute, value: string) {
+    private onInputBlur({name, value, validators}: EventInterface) {
 
         // get the validators for each field defined in the forms config file and validate.
-        const validators = getEmployeeFieldValidators(name);
         validators.forEach(this.validate.bind(this, name, value))
     }
 
-    private onInputChange(name: EmployeeAttribute, value: string) {
+    private onInputChange({name, value, validators, errors}: EventInterface) {
 
-        // create payload in FormInterface form where the value is the e.currentTarget.value
-        // const {value, name} = e.currentTarget as { value: string, name: EmployeeAttribute };
+        // only validate if an existing error is present.
+        if (errors.length > 0) {
+            validators.forEach(this.validate.bind(this, name, value));
+        }
 
         const payload = {
             entity: Entities.Employee,
@@ -118,7 +127,7 @@ class FormContainer extends React.Component<FormContainerProps> {
         this.props.setFormFieldValue(payload);
     }
 
-    private validate(attribute: EmployeeAttribute, value: string, validator: ValidatorInterface) {
+    private validate(attribute: EmployeeAttribute, value: string, validator: Validator) {
 
 
         // create payload in FormInterface form where the value is the error message

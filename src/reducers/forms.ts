@@ -1,6 +1,6 @@
 import {CLEAR_FORM_DATA, PUSH_FORM_FIELD_ERROR, REMOVE_FORM_FIELD_ERROR, SET_FORM_FIELD_VALUE} from "../actions/forms";
 import {EmployeeAttribute, Entities} from "../types/enums";
-import {Employee} from "../types/models";
+import {Employee} from "../types/index";
 
 /*
 
@@ -51,7 +51,7 @@ const forms = (state = initialState(), action: any) => {
         case CLEAR_FORM_DATA:
             return {
                 ...state,
-                [action.payload.entity]: initialState[action.payload.entity]
+                [action.payload.entity]: initialState()[action.payload.entity]
             };
 
         case SET_FORM_FIELD_VALUE:

@@ -11,7 +11,6 @@
     "interface-name" : [false],
     "object-literal-sort-keys" : [false],
     "ordered-imports" : [false],
-    "no-console" : [false],
-    "jsx-no-lambda" : [false]
+    "no-console" : [false]
   }
 }

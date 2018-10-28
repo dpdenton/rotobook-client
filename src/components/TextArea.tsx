@@ -1,8 +1,10 @@
 import * as React from 'react';
 import Label from "./Label";
 import FormGroup from "./FormGroup";
-import {EmployeeAttribute} from "../types/enums";
 import ErrorList from "./ErrorList";
+import {Validator} from "../types";
+import {EmployeeAttribute} from "../types/enums";
+import {EventInterface} from "../containers/FormContainer";
 
 interface TextAreaProps {
     label?: string
@@ -11,11 +13,12 @@ interface TextAreaProps {
     name: string
     errors: string[]
     type?: string
-    onChange?: (name: string, value: string) => void
-    onBlur?: (name: string, value: string) => void
+    onChange?: (data: EventInterface) => void
+    onBlur?: (data: EventInterface) => void
+    validators?: Validator[]
 }
 
-const TextArea: React.SFC<TextAreaProps> = ({name, label, errors, ...input}) => {
+const TextArea: React.SFC<TextAreaProps> = ({name, label, validators = [], errors = [], ...input}) => {
 
     const {onBlur, onChange, ...rest} = input;
 
@@ -31,8 +34,8 @@ const TextArea: React.SFC<TextAreaProps> = ({name, label, errors, ...input}) => 
                 {...input}
                 id={name}
                 name={name}
-                onBlur={onEvent.bind(null, onBlur)}
-                onChange={onEvent.bind(null, onChange)}
+                onBlur={onEvent({callback: onBlur, validators, errors})}
+                onChange={onEvent({callback: onChange, validators, errors})}
                 {...rest}
             />
             <ErrorList
@@ -42,9 +45,10 @@ const TextArea: React.SFC<TextAreaProps> = ({name, label, errors, ...input}) => 
     )
 };
 
-const onEvent = (callbackFn: any, e: React.FormEvent<HTMLTextAreaElement>) => {
+const onEvent = ({callback, validators, errors}: any) => (e: React.FormEvent<HTMLTextAreaElement>) => {
     const {name, value} = e.currentTarget as { value: string, name: EmployeeAttribute };
-    callbackFn(name, value);
+    callback({name, value, validators, errors});
 };
+
 
 export default TextArea;

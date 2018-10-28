@@ -3,7 +3,7 @@ import {Entities} from "../types/enums";
 import EntityListData from "../containers/EntityListData";
 import {getEmployeeList} from "../actions/entities";
 import EmployeeListItem from "./EmployeeListItem";
-import {Employee} from "../types/models";
+import {Employee} from "../types/index";
 
 
 /*

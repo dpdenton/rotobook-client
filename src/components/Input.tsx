@@ -3,6 +3,8 @@ import Label from "./Label";
 import FormGroup from "./FormGroup";
 import {EmployeeAttribute} from "../types/enums";
 import ErrorList from "./ErrorList";
+import {Validator} from "../types";
+import {EventInterface} from "../containers/FormContainer";
 
 interface InputProps {
     value: string
@@ -12,12 +14,13 @@ interface InputProps {
     errors?: string[]
     label?: string
     type?: string
-    onBlur?: (name: string, value: string) => void
-    onChange?: (name: string, value: string) => void
+    onBlur?: (data: EventInterface) => void
+    onChange?: (data: EventInterface) => void
     onMouseEnter?: () => void
+    validators?: Validator[]
 }
 
-const Input: React.SFC<InputProps> = ({name, label, errors = [], ...input}) => {
+const Input: React.SFC<InputProps> = ({name, label, validators = [], errors = [], ...input}) => {
 
     const {onChange, onBlur, ...rest} = input;
 
@@ -34,8 +37,8 @@ const Input: React.SFC<InputProps> = ({name, label, errors = [], ...input}) => {
                 {...rest}
                 id={name}
                 name={name}
-                onBlur={onEvent.bind(null, onBlur)}
-                onChange={onEvent.bind(null, onChange)}
+                onBlur={onEvent({callback: onBlur, validators, errors})}
+                onChange={onEvent({callback: onChange, validators, errors})}
             />
             <ErrorList
                 errors={errors}
@@ -44,10 +47,10 @@ const Input: React.SFC<InputProps> = ({name, label, errors = [], ...input}) => {
     )
 };
 
-const onEvent = (callbackFn: any, e: React.FormEvent<HTMLInputElement>) => {
-    const {name, value} = e.currentTarget as { value: string, name: EmployeeAttribute };
-    callbackFn(name, value);
-};
 
+const onEvent = ({callback, validators, errors}: any) => (e: React.FormEvent<HTMLInputElement>) => {
+    const {name, value} = e.currentTarget as { value: string, name: EmployeeAttribute };
+    callback({name, value, validators, errors});
+};
 
 export default Input;
