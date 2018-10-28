@@ -1,47 +1,50 @@
 import {CLEAR_FORM_DATA, PUSH_FORM_FIELD_ERROR, REMOVE_FORM_FIELD_ERROR, SET_FORM_FIELD_VALUE} from "../actions/forms";
-import {EmployeeAttribute} from "../types/enums";
+import {EmployeeAttribute, Entities} from "../types/enums";
+import {Employee} from "../types/models";
 
 /*
 
 I set the form reducer up in such a way that you can easily add more forms with different fields
-and use the same actions so manage them, minimising maintenence and duplicate code.
+and use the same actions so manage them, minimising maintenance and duplicate code.
 
 It's a pattern probably more used with entities but I think can work equally well with forms, especially if there
 are lots of forms which map directly to entities within the app.
 
  */
 
-export interface ReducerFormInterface {
-    employee: EmployeeFormInterface
-}
-
-export interface ReducerFieldInterface {
+export interface FormField {
     value: string,
     errors: string[]
 }
 
-export interface EmployeeFormInterface {
-
-    [EmployeeAttribute.Name]: ReducerFieldInterface,
-    [EmployeeAttribute.Email]: ReducerFieldInterface,
-    [EmployeeAttribute.Message]: ReducerFieldInterface,
+// iterate every attribute in the entity and map to a 'FormField' interface
+export type FormEntity<E> = {
+    [P in keyof E]: FormField
 }
 
-const initialFieldState: ReducerFieldInterface = {
+interface FormInterface {
+    [Entities.Employee]: FormEntity<Employee>
+}
+
+const initialFieldState = (): FormField => ({
     value: '',
     errors: []
-};
+});
 
-const initialState: ReducerFormInterface = {
+const initialState = (): FormInterface => ({
 
     employee: {
-        [EmployeeAttribute.Name]: initialFieldState,
-        [EmployeeAttribute.Email]: initialFieldState,
-        [EmployeeAttribute.Message]: initialFieldState,
+        [EmployeeAttribute.Id]: {
+            value: '-1',
+            errors: [],
+        },
+        [EmployeeAttribute.Name]: initialFieldState(),
+        [EmployeeAttribute.Email]: initialFieldState(),
+        [EmployeeAttribute.Message]: initialFieldState(),
     }
-};
+});
 
-const forms = (state = initialState, action: any) => {
+const forms = (state = initialState(), action: any) => {
 
     switch (action.type) {
 

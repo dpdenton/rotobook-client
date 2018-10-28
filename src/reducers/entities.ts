@@ -1,6 +1,5 @@
 import {GET_EMPLOYEE_LIST_FAILURE, GET_EMPLOYEE_LIST_REQUEST, GET_EMPLOYEE_LIST_SUCCESS} from "../actions/entities";
-import {Employee} from "../types/models";
-import {Entities} from "../types/enums";
+import {Entity} from "../types/models";
 
 // @TODO add state interfaces
 // flatten the data (altho data is already flat), but in production using something like https://github.com/paularmstrong/normalizr
@@ -15,19 +14,19 @@ interface EntityInterface<E> {
     ids: number[]
 }
 
-interface EntityStateInterface {
-    [Entities.Employee]: EntityInterface<Employee>
+type EntityStateInterface<E> = {
+    [M in keyof E]: EntityInterface<E[M]>
 }
 
-const initialState: EntityStateInterface = {
+const initialState = (): EntityStateInterface<Entity> => ({
     employee: {
         loading: false,
         byId: {},
         ids: [],
     }
-};
+});
 
-const entities = (state = initialState, action: any) => {
+const entities = (state = initialState(), action: any) => {
 
     switch (action.type) {
 
@@ -53,9 +52,9 @@ const entities = (state = initialState, action: any) => {
 
             return {
                 ...state,
-                loading: false,
                 employee: {
                     ...state.employee,
+                    loading: false,
                     ids: setUserIds(state.employee.ids, action),
                     byId: setUsersById(state.employee.byId, action),
                 }

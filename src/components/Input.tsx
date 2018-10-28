@@ -12,8 +12,9 @@ interface InputProps {
     errors?: string[]
     label?: string
     type?: string
-    onChange?: (name: string, value: string) => void
     onBlur?: (name: string, value: string) => void
+    onChange?: (name: string, value: string) => void
+    onMouseEnter?: () => void
 }
 
 const Input: React.SFC<InputProps> = ({name, label, errors = [], ...input}) => {
@@ -21,13 +22,15 @@ const Input: React.SFC<InputProps> = ({name, label, errors = [], ...input}) => {
     const {onChange, onBlur, ...rest} = input;
 
     return (
-        <FormGroup>
+        <FormGroup
+            error={errors.length > 0}
+        >
             {label &&
             <Label htmlFor={name}>
                 {label}
             </Label>}
             <input
-                className="form-input"
+                className="formInput"
                 {...rest}
                 id={name}
                 name={name}

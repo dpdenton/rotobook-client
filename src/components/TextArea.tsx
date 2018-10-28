@@ -20,7 +20,9 @@ const TextArea: React.SFC<TextAreaProps> = ({name, label, errors, ...input}) => 
     const {onBlur, onChange, ...rest} = input;
 
     return (
-        <FormGroup>
+        <FormGroup
+            error={errors.length > 0}
+        >
             {label && <Label htmlFor={name}>
                 {label}
             </Label>}

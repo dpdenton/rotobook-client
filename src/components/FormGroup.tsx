@@ -1,10 +1,16 @@
 import * as React from 'react';
 
-const FormGroup: React.SFC<{}> = props => {
+interface FormGroupProps {
+    error?: boolean
+}
+
+const FormGroup: React.SFC<FormGroupProps> = ({error = false, children}) => {
+
+    const className = error ? 'error formGroup' : 'formGroup';
 
     return (
-        <div className="form-group">
-            {props.children}
+        <div className={className}>
+            {children}
         </div>
     )
 };

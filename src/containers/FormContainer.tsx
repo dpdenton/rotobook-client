@@ -1,26 +1,37 @@
 import * as React from 'react';
-import Input from "../components/Input";
 import {connect} from "react-redux";
+import {ToastContainer, toast} from 'react-toastify';
+
+import Input from "../components/Input";
+import TextArea from "../components/TextArea";
+
+import {parseFormData} from "../utils";
+import {ValidatorInterface} from "../utils/validators";
+
+import {Employee} from "../types/models";
+import {EmployeeAttribute, Entities} from "../types/enums";
+
+import {getEmployeeFieldValidators} from "../config/forms";
+
+import {FormEntity} from "../reducers/forms";
 
 import {
-    FormInterface, setFormFieldValue, pushFormFieldError, removeFormFieldError, postEmployeeForm,
+    FormInterface,
+    setFormFieldValue,
+    pushFormFieldError,
+    removeFormFieldError,
+    postEmployeeForm,
     clearFormData
 } from "../actions/forms";
-import {EmployeeAttribute, Entities} from "../types/enums";
-import {getEmployeeFieldValidators} from "../config/forms";
-import TextArea from "../components/TextArea";
-import {parseFormData} from "../utils";
-import {EmployeeFormInterface} from "../reducers/forms";
-import {ValidatorInterface} from "../utils/validators";
 
 interface FormContainerProps {
     errors: string[]
     completed: boolean[]
-    employee: EmployeeFormInterface
+    employee: FormEntity<Employee>
     setFormFieldValue: (payload: FormInterface) => void
     pushFormFieldError: (payload: FormInterface) => void
     removeFormFieldError: (payload: FormInterface) => void
-    postEmployeeForm: (data: {}) => any
+    postEmployeeForm: (data: Employee) => any
     clearFormData: (payload: Partial<FormInterface>) => void
 }
 
@@ -31,6 +42,7 @@ class FormContainer extends React.Component<FormContainerProps> {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.onInputChange = this.onInputChange.bind(this);
         this.onInputBlur = this.onInputBlur.bind(this);
+        this.onMouseEnter = this.onMouseEnter.bind(this);
     }
 
     public render() {
@@ -41,42 +53,48 @@ class FormContainer extends React.Component<FormContainerProps> {
         const submitDisabled = errors.length > 0 || completed.indexOf(false) !== -1;
 
         return (
-            <form onSubmit={this.handleSubmit}>
-                <Input
-                    {...employee.name}
-                    label={'Name *'}
-                    placeholder={'Enter your full name'}
-                    name={EmployeeAttribute.Name}
-                    onChange={this.onInputChange}
-                    onBlur={this.onInputBlur}
-                />
+            <div>
+                <form
+                    onSubmit={this.handleSubmit}
+                >
+                    <Input
+                        {...employee.name}
+                        label={'Name *'}
+                        placeholder={'Enter your full name'}
+                        name={EmployeeAttribute.Name}
+                        onChange={this.onInputChange}
+                        onBlur={this.onInputBlur}
+                    />
 
-                <Input
-                    {...employee.email}
-                    label={'Email *'}
-                    placeholder={'Enter your full email'}
-                    name={EmployeeAttribute.Email}
-                    onChange={this.onInputChange}
-                    onBlur={this.onInputBlur}
-                />
+                    <Input
+                        {...employee.email}
+                        label={'Email *'}
+                        placeholder={'Enter your full email'}
+                        name={EmployeeAttribute.Email}
+                        onChange={this.onInputChange}
+                        onBlur={this.onInputBlur}
+                    />
 
-                <TextArea
-                    {...employee.message}
-                    label={'Message *'}
-                    placeholder={"What's your favourite saying?"}
-                    name={EmployeeAttribute.Message}
-                    onChange={this.onInputChange}
-                    onBlur={this.onInputBlur}
-                />
+                    <TextArea
+                        {...employee.message}
+                        label={'Message *'}
+                        placeholder={"What's your favourite saying?"}
+                        name={EmployeeAttribute.Message}
+                        onChange={this.onInputChange}
+                        onBlur={this.onInputBlur}
+                    />
 
-                <Input
-                    disabled={submitDisabled}
-                    type={'submit'}
-                    name={'submit'}
-                    value={'Submit'}
-                />
+                    <Input
+                        onMouseEnter={this.onMouseEnter}
+                        disabled={submitDisabled}
+                        type={'submit'}
+                        name={'submit'}
+                        value={'Submit'}
+                    />
 
-            </form>
+                </form>
+                <ToastContainer/>
+            </div>
         )
     }
 
@@ -121,29 +139,39 @@ class FormContainer extends React.Component<FormContainerProps> {
         dispatchAction(payload);
     }
 
+    private onMouseEnter() {
+
+        let validators;
+        const {name, email, message} = this.props.employee;
+
+        validators = getEmployeeFieldValidators(EmployeeAttribute.Name);
+        validators.forEach(this.validate.bind(this, EmployeeAttribute.Name, name.value));
+
+        validators = getEmployeeFieldValidators(EmployeeAttribute.Email);
+        validators.forEach(this.validate.bind(this, EmployeeAttribute.Email, email.value));
+
+        validators = getEmployeeFieldValidators(EmployeeAttribute.Message);
+        validators.forEach(this.validate.bind(this, EmployeeAttribute.Message, message.value));
+    }
+
     private async handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 
         e.preventDefault();
 
+        // convert data in redux to data structure accepted by webservice.
         const formData = parseFormData(this.props.employee);
 
         try {
             const response = await this.props.postEmployeeForm(formData);
 
-            // new resource created
+            // new resource created ok
             if (response.payload.status === 201) {
 
-                // @TODO improve feedback message
-                alert('Success! Your Employee Record has been submitted');
-
-                // clear form data and redirect to home page.
-                this.props.clearFormData({
-                    entity: Entities.Employee,
-                });
+                toast('Your Employee Record has been successfully been submitted!');
+                this.props.clearFormData({entity: Entities.Employee});
             }
         } catch (e) {
-            alert(e);
-            console.log({e})
+            toast(`An error has occurred: ${e}`, e);
         }
     }
 }

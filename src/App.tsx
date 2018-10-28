@@ -8,6 +8,7 @@ import EmployeeList from "./components/EmployeeList";
 import Header from "./components/Header";
 
 import './App.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
 

@@ -7,7 +7,7 @@ interface ErrorListProps {
 const ErrorList: React.SFC<ErrorListProps> = ({errors = []}) => {
 
     return (
-        <ul className='error-list'>
+        <ul className='errorList'>
             {errors.map(error => (
                 <li
                     // error guaranteed to be a unique string so ok to do this

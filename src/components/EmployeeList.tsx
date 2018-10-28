@@ -3,6 +3,7 @@ import {Entities} from "../types/enums";
 import EntityListData from "../containers/EntityListData";
 import {getEmployeeList} from "../actions/entities";
 import EmployeeListItem from "./EmployeeListItem";
+import {Employee} from "../types/models";
 
 
 /*
@@ -22,19 +23,19 @@ const EmployeeList = () => {
             entity={Entities.Employee}
             dataFunction={getEmployeeList}
         >
-            {({data}: any) => {
-                {return data.map((employee: any) => {
-                    return (
-                        <EmployeeListItem
-                            key={employee.id}
-                            {...employee}
-                        />
-                    )
-                })}
-
-            }}
+            {renderData}
         </EntityListData>
     )
 };
+
+const renderData = ({data}: { data: Employee[] }) => (
+
+    data.map(employee => (
+        <EmployeeListItem
+            key={employee.id}
+            {...employee}
+        />
+    ))
+);
 
 export default EmployeeList;

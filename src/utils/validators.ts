@@ -30,6 +30,8 @@ export const validatorEmail: ValidatorInterface = {
 
 export const validatorRotageekEmail: ValidatorInterface = {
     isValid: (value: string) => {
+
+        console.log({value})
         return value.endsWith('@rotageek.com');
     },
     message: "Your email must be an '@rotageek.com' address."
