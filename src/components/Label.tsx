@@ -9,7 +9,7 @@ const Label: React.SFC<LabelProps> = props => {
     const {htmlFor, children} = props;
 
     return (
-        <label htmlFor={htmlFor} className="form-label">
+        <label htmlFor={htmlFor} className="formLabel">
             {children}
         </label>
     )

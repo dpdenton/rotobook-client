@@ -30,7 +30,7 @@ const TextArea: React.SFC<TextAreaProps> = ({name, label, validators = [], error
                 {label}
             </Label>}
             <textarea
-                className="form-input"
+                className="formInput"
                 id={name}
                 name={name}
                 onBlur={onEvent({callback: onBlur, validators, errors})}
