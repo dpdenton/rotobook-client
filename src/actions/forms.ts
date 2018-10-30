@@ -1,6 +1,8 @@
 import axios from 'axios';
+import {Dispatch} from "redux";
 import {ApiEndpoints} from "../types/enums";
-import {ActionWithPayload, FormPayload} from "../types";
+import {ActionWithPayload, Employee, FormPayload} from "../types";
+
 
 export const POST_EMPLOYEE_FORM_REQUEST = 'post/employee/SUBMIT_REQUEST';
 export const POST_EMPLOYEE_FORM_SUCCESS = 'post/employee/SUBMIT_SUCCESS';
@@ -8,7 +10,7 @@ export const POST_EMPLOYEE_FORM_FAILURE = 'post/employee/SUBMIT_FAIL';
 
 // I'd normally dispatch API actions through some kind of middleware but overkill for this exercise.
 
-export const postEmployeeForm = (data: any) => (dispatch: any) => {
+export const postEmployeeForm = (data: Employee) => (dispatch: Dispatch) => {
 
     dispatch({
         type: POST_EMPLOYEE_FORM_REQUEST
