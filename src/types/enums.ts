@@ -9,7 +9,7 @@ export enum PagePaths {
     EmployeeDetail = '/:id',
 }
 
-export enum Entities {
+export enum Entity {
     Employee = 'employee',
 }
 

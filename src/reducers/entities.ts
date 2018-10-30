@@ -14,6 +14,7 @@ interface EntityInterface<E> {
     ids: number[]
 }
 
+// go through each entity and assign it an EntityInterface
 type EntityStateInterface<E> = {
     [M in keyof E]: EntityInterface<E[M]>
 }

@@ -1,16 +1,6 @@
 import axios from 'axios';
-import {ApiEndpoints, EmployeeAttribute, Entities} from "../types/enums";
-
-export interface Action<P> {
-    type: string,
-    payload: P
-}
-
-export interface FormInterface {
-    entity: Entities
-    attribute: EmployeeAttribute
-    value: string
-}
+import {ApiEndpoints} from "../types/enums";
+import {ActionWithPayload, FormPayload} from "../types";
 
 export const POST_EMPLOYEE_FORM_REQUEST = 'post/employee/SUBMIT_REQUEST';
 export const POST_EMPLOYEE_FORM_SUCCESS = 'post/employee/SUBMIT_SUCCESS';
@@ -37,30 +27,29 @@ export const postEmployeeForm = (data: any) => (dispatch: any) => {
 
 export const SET_FORM_FIELD_VALUE = 'SET_FORM_FIELD_VALUE';
 
-export const setFormFieldValue = (payload: FormInterface) => {
-
+export const setFormFieldValue = (payload: FormPayload) => {
     return createAction(SET_FORM_FIELD_VALUE, payload);
 };
 
 export const PUSH_FORM_FIELD_ERROR = 'PUSH_FORM_FIELD_ERROR';
 
-export const pushFormFieldError = (payload: FormInterface) => {
+export const pushFormFieldError = (payload: FormPayload) => {
     return createAction(PUSH_FORM_FIELD_ERROR, payload);
 };
 
 export const REMOVE_FORM_FIELD_ERROR = 'REMOVE_FORM_FIELD_ERROR';
 
-export const removeFormFieldError = (payload: FormInterface) => {
+export const removeFormFieldError = (payload: FormPayload) => {
     return createAction(REMOVE_FORM_FIELD_ERROR, payload);
 };
 
 export const CLEAR_FORM_DATA = 'CLEAR_FORM_DATA';
 
-export const clearFormData = (payload: Partial<FormInterface>) => {
+export const clearFormData = (payload: Partial<FormPayload>) => {
     return createAction(CLEAR_FORM_DATA, payload);
 };
 
-function createAction<P>(type: string, payload: P): Action<P> {
+function createAction<P>(type: string, payload: P): ActionWithPayload<P> {
     return {
         type,
         payload,

@@ -1,12 +1,12 @@
 import * as React from 'react';
 import {connect} from "react-redux";
-import {Entities} from "../types/enums";
+import {Entity} from "../types/enums";
 import {BarLoader} from 'react-spinners';
 import {Employee} from "../types";
 
 
 interface EntityListDataProps {
-    entity: Entities
+    entity: Entity
     loading: boolean
     data: Employee[] // \ Entity[]...
     dataFunction: () => void

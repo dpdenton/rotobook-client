@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Entities} from "../types/enums";
+import {Entity} from "../types/enums";
 import EntityListData from "../containers/EntityListData";
 import {getEmployeeList} from "../actions/entities";
 import EmployeeListItem from "./EmployeeListItem";
@@ -20,7 +20,7 @@ const EmployeeList = () => {
 
     return (
         <EntityListData
-            entity={Entities.Employee}
+            entity={Entity.Employee}
             dataFunction={getEmployeeList}
         >
             {renderData}

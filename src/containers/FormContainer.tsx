@@ -7,29 +7,29 @@ import TextArea from "../components/TextArea";
 
 import {parseFormData} from "../utils";
 import {Employee, Validator} from "../types/";
-import {EmployeeAttribute, Entities} from "../types/enums";
+import {EmployeeAttribute, Entity} from "../types/enums";
 
 import {FormEntity} from "../reducers/forms";
 import {getEmployeeFieldValidators} from "../config/forms";
 
 import {
-    FormInterface,
     setFormFieldValue,
     pushFormFieldError,
     removeFormFieldError,
     postEmployeeForm,
     clearFormData
 } from "../actions/forms";
+import {EmployeeFormPayload} from "../types";
 
 interface FormContainerProps {
     errors: string[]
     completed: boolean[]
     employee: FormEntity<Employee>
-    setFormFieldValue: (payload: FormInterface) => void
-    pushFormFieldError: (payload: FormInterface) => void
-    removeFormFieldError: (payload: FormInterface) => void
+    setFormFieldValue: (payload: EmployeeFormPayload) => void
+    pushFormFieldError: (payload: EmployeeFormPayload) => void
+    removeFormFieldError: (payload: EmployeeFormPayload) => void
     postEmployeeForm: (data: Employee) => any
-    clearFormData: (payload: Partial<FormInterface>) => void
+    clearFormData: (payload: Partial<EmployeeFormPayload>) => void
 }
 
 export interface EventInterface {
@@ -120,7 +120,7 @@ class FormContainer extends React.Component<FormContainerProps> {
         }
 
         const payload = {
-            entity: Entities.Employee,
+            entity: Entity.Employee,
             attribute: name,
             value,
         };
@@ -132,7 +132,7 @@ class FormContainer extends React.Component<FormContainerProps> {
 
         // create payload in FormInterface form where the value is the error message
         const payload = {
-            entity: Entities.Employee,
+            entity: Entity.Employee,
             attribute,
             value: validator.message,
         };
@@ -177,7 +177,7 @@ class FormContainer extends React.Component<FormContainerProps> {
             if (response.payload.status === 201) {
 
                 toast('Your Employee Record has been successfully been submitted!');
-                this.props.clearFormData({entity: Entities.Employee});
+                this.props.clearFormData({entity: Entity.Employee});
             }
         } catch (e) {
             toast(`An error has occurred: ${e}`, e);
@@ -212,11 +212,11 @@ const mapState = (state: any, props: any) => {
 const mapDispatch = (dispatch: any) => {
 
     return {
-        setFormFieldValue: (payload: FormInterface) => dispatch(setFormFieldValue(payload)),
-        pushFormFieldError: (payload: FormInterface) => dispatch(pushFormFieldError(payload)),
-        removeFormFieldError: (payload: FormInterface) => dispatch(removeFormFieldError(payload)),
+        setFormFieldValue: (payload: EmployeeFormPayload) => dispatch(setFormFieldValue(payload)),
+        pushFormFieldError: (payload: EmployeeFormPayload) => dispatch(pushFormFieldError(payload)),
+        removeFormFieldError: (payload: EmployeeFormPayload) => dispatch(removeFormFieldError(payload)),
         postEmployeeForm: (data: any) => dispatch(postEmployeeForm(data)),
-        clearFormData: (payload: Partial<FormInterface>) => dispatch(clearFormData(payload)),
+        clearFormData: (payload: Partial<EmployeeFormPayload>) => dispatch(clearFormData(payload)),
     }
 };
 

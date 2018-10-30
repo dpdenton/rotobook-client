@@ -1,5 +1,5 @@
 import {CLEAR_FORM_DATA, PUSH_FORM_FIELD_ERROR, REMOVE_FORM_FIELD_ERROR, SET_FORM_FIELD_VALUE} from "../actions/forms";
-import {EmployeeAttribute, Entities} from "../types/enums";
+import {EmployeeAttribute, Entity} from "../types/enums";
 import {Employee} from "../types/index";
 
 /*
@@ -23,7 +23,7 @@ export type FormEntity<E> = {
 }
 
 interface FormInterface {
-    [Entities.Employee]: FormEntity<Employee>
+    [Entity.Employee]: FormEntity<Employee>
 }
 
 const initialFieldState = (): FormField => ({
