@@ -1,10 +1,10 @@
 import * as React from 'react';
 
-interface ILabel {
+interface LabelProps {
     htmlFor: string
 }
 
-const Label: React.SFC<ILabel> = props => {
+const Label: React.SFC<LabelProps> = props => {
 
     const {htmlFor, children} = props;
 

@@ -4,17 +4,13 @@ interface PageProps {
     style?: React.CSSProperties
 }
 
-const Page: React.SFC<PageProps> = props => {
+const Page: React.SFC<PageProps> = ({style={}, children}) => {
 
     return (
-        <div style={props.style} className='page'>
-            {props.children}
+        <div style={style} className='page'>
+            {children}
         </div>
     )
-};
-
-Page.defaultProps = {
-    style: {},
 };
 
 export default Page;
