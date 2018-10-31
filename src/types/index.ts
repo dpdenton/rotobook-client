@@ -24,7 +24,7 @@ export interface EntityAttributeValue<E,A,V> {
     value: V
 }
 
-export interface FormPayload extends EntityAttributeValue<Entity, any, string>{}
+export interface FormPayload extends EntityAttributeValue<Entity, EmployeeAttribute, string>{}
 export interface EmployeeFormPayload extends EntityAttributeValue<Entity.Employee, EmployeeAttribute, string>{}
 
 export interface ActionWithPayload<P> {

@@ -26,12 +26,12 @@ interface FormInterface {
     [Entity.Employee]: FormEntity<Employee>
 }
 
-const initialFieldState = (): FormField => ({
+export const initialFieldState = (): FormField => ({
     value: '',
     errors: []
 });
 
-const initialState = (): FormInterface => ({
+export const initialState = (): FormInterface => ({
 
     employee: {
         [EmployeeAttribute.Id]: {

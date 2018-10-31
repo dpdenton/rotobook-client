@@ -3,7 +3,6 @@ import {Dispatch} from "redux";
 import {ApiEndpoints} from "../types/enums";
 import {ActionWithPayload, Employee, FormPayload} from "../types";
 
-
 export const POST_EMPLOYEE_FORM_REQUEST = 'post/employee/SUBMIT_REQUEST';
 export const POST_EMPLOYEE_FORM_SUCCESS = 'post/employee/SUBMIT_SUCCESS';
 export const POST_EMPLOYEE_FORM_FAILURE = 'post/employee/SUBMIT_FAIL';
@@ -22,7 +21,6 @@ export const postEmployeeForm = (data: Employee) => (dispatch: Dispatch) => {
             return dispatch(createAction(POST_EMPLOYEE_FORM_SUCCESS, response));
         })
         .catch(error => {
-
             return dispatch(createAction(POST_EMPLOYEE_FORM_FAILURE, error));
         });
 };
