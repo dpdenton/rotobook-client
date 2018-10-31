@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {Dispatch} from "redux";
-import {ApiEndpoints} from "../types/enums";
+import {ApiEndpoint} from "../types/enums";
 import {ActionWithPayload, Employee, FormPayload} from "../types";
 
 export const POST_EMPLOYEE_FORM_REQUEST = 'post/employee/SUBMIT_REQUEST';
@@ -16,7 +16,7 @@ export const postEmployeeForm = (data: Employee) => (dispatch: Dispatch) => {
     });
 
     return axios
-        .post(ApiEndpoints.baseUrl + ApiEndpoints.applicants, data)
+        .post(ApiEndpoint.baseUrl + ApiEndpoint.employee, data)
         .then(response => {
             return dispatch(createAction(POST_EMPLOYEE_FORM_SUCCESS, response));
         })

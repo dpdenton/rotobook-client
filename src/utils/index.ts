@@ -1,5 +1,5 @@
 import {FormEntity} from "../reducers/forms";
-import {Employee} from "../types";
+import {ActionWithPayload, Employee} from "../types";
 
 export const parseFormData = (formData: FormEntity<Employee>): Employee => {
 
@@ -9,3 +9,10 @@ export const parseFormData = (formData: FormEntity<Employee>): Employee => {
         return prevValue;
     }, {}) as Employee;
 };
+
+export function createAction<P>(type: string, payload: P): ActionWithPayload<P> {
+    return {
+        type,
+        payload,
+    }
+}

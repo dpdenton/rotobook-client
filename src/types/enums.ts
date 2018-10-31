@@ -1,6 +1,6 @@
-export enum ApiEndpoints {
+export enum ApiEndpoint {
     baseUrl = 'https://rotobook.herokuapp.com/api/v1',
-    applicants = '/employees'
+    employee = '/employees'
 }
 
 export enum PagePaths {

@@ -1,7 +1,7 @@
 import {GET_EMPLOYEE_LIST_FAILURE, GET_EMPLOYEE_LIST_REQUEST, GET_EMPLOYEE_LIST_SUCCESS} from "../actions/entities";
 import {Entity} from "../types/index";
+import {ActionWithPayload, Employee} from "../types";
 
-// @TODO add state interfaces
 // flatten the data (altho data is already flat), but in production using something like https://github.com/paularmstrong/normalizr
 // would also implement some form of caching bases as per https://sliced.co
 
@@ -17,7 +17,7 @@ interface EntityInterface<E> {
 // go through each entity and assign it an EntityInterface
 type EntityStateInterface<E> = {
     [M in keyof E]: EntityInterface<E[M]>
-}
+    }
 
 const initialState = (): EntityStateInterface<Entity> => ({
     employee: {
@@ -66,23 +66,20 @@ const entities = (state = initialState(), action: any) => {
 };
 
 
-const setUsersById = (byId: any, action: any) => {
-
-    const {data} = action.payload;
+const setUsersById = (byId: { [key: number]: Employee }, action: ActionWithPayload<Employee[]>) => {
 
     const usersById = {};
 
-    for (const item of data) {
+    for (const item of action.payload) {
         usersById[item.id] = item;
     }
 
     return Object.assign({}, byId, usersById);
 };
 
-const setUserIds = (ids: any, action: any) => {
+const setUserIds = (ids: any, action: ActionWithPayload<Employee[]>) => {
 
-    const {data} = action.payload;
-    return data.map((item: any) => item.id);
+    return action.payload.map(item => item.id);
 };
 
 
