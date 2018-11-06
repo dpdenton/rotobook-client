@@ -4,7 +4,7 @@ import MockAdapter from 'axios-mock-adapter';
 import {ApiEndpoint} from "../types/enums";
 import {GET_EMPLOYEE_LIST_REQUEST, GET_EMPLOYEE_LIST_SUCCESS, getEmployeeList} from "./entities";
 
-describe('fetchDog action', () => {
+describe('get entities action', () => {
 
     let store: any;
     let httpMock: any;

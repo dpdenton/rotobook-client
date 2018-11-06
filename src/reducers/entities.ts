@@ -19,7 +19,7 @@ type EntityStateInterface<E> = {
     [M in keyof E]: EntityInterface<E[M]>
     }
 
-const initialState = (): EntityStateInterface<Entity> => ({
+export const initialState = (): EntityStateInterface<Entity> => ({
     employee: {
         loading: false,
         byId: {},
