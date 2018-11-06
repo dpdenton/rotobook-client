@@ -3,7 +3,7 @@ import {Entity} from "../types/enums";
 import EntityListData from "../containers/EntityListData";
 import {getEmployeeList} from "../actions/entities";
 import EmployeeListItem from "./EmployeeListItem";
-import {Employee} from "../types/index";
+import {Employee} from "../types";
 
 
 /*
@@ -16,7 +16,8 @@ I'd normally generalise the 'getEmployeeList' action to 'getEntity' or even 'get
 config object which would have the entity's endpoint
  */
 
-const EmployeeList = () => {
+
+const EmployeeList: React.SFC<{}> = () => {
 
     return (
         <EntityListData
